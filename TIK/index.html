@@ -1,0 +1,317 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistem Konseling Siswa Digital</title>
+  <style>
+    /* ✨ Animasi teks berjalan lembut */
+    @keyframes slideText {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }.moving-title {
+  display: inline-block;
+  white-space: nowrap;
+  animation: slideText 12s linear infinite;
+  color: #fff;
+  font-size: 2.3rem;
+  font-weight: bold;
+  text-shadow: 0 0 10px #ffb6d9, 0 0 20px #ff7aa2;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  transition: background 0.4s, color 0.4s;
+}
+
+/* 🌈 Animasi gradasi bergerak */
+body {
+  background: linear-gradient(-45deg, #ffe0f0, #fff4f8, #ffd6e8, #fff0f7);
+  background-size: 400% 400%;
+  animation: gradientMove 10s ease infinite;
+  color: #333;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+header {
+  background: linear-gradient(135deg, #1c2e94, #6eaeca);
+  color: white;
+  text-align: center;
+  padding: 2rem 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  position: relative;
+}
+
+header h1 { font-size: 2.2rem; text-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+.theme-toggle {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: white;
+  color: #ff4f8b;
+  border: none;
+  border-radius: 30px;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(255,128,170,0.3);
+  transition: 0.3s;
+}
+.theme-toggle:hover { transform: scale(1.1); background: #ffeaf3; }
+
+nav {
+  background: white;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  border-bottom: 3px solid #ffd6e8;
+}
+nav a { text-decoration: none; color: #ff4f8b; font-weight: 600; transition: 0.3s; }
+nav a:hover { color: #d63384; border-bottom: 2px solid #ff8abf; }
+
+section {
+  padding: 3rem 1rem;
+  max-width: 1000px;
+  margin: auto;
+}
+h2 { text-align: center; color: #d63384; margin-bottom: 1.5rem; }
+
+form {
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(255,143,178,0.2);
+  border: 2px solid #ffe0eb;
+}
+form input, form textarea, form select, form button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ffc6da;
+  font-size: 1rem;
+}
+form button, #chat-input button {
+  background: linear-gradient(135deg, #ff7aa2, #ffb6d9);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 0 15px #ffb6d9;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: pulseGlow 2.5s infinite alternate;
+}
+@keyframes pulseGlow {
+  0% { box-shadow:0 0 10px #ff7aa2,0 0 20px #ffb6d9; }
+  50% { box-shadow:0 0 25px #ff66a3,0 0 45px #ff99cc; }
+  100% { box-shadow:0 0 10px #ff7aa2,0 0 25px #ffb6d9; }
+}
+
+.articles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 1.5rem;
+}
+.article {
+  background:white;
+  padding:1.5rem;
+  border-radius:15px;
+  box-shadow:0 2px 12px rgba(255,138,170,0.2);
+  transition:0.3s;
+  border:1px solid #ffd3e3;
+}
+.article:hover {
+  transform: translateY(-5px);
+  box-shadow:0 4px 20px rgba(255,117,157,0.3);
+}
+
+#chatbot {
+  position: fixed;
+  bottom:20px;
+  right:20px;
+  width:320px;
+  background:white;
+  border-radius:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  border:2px solid #ffb3cf;
+  animation: slideUp 0.8s ease;
+}
+@keyframes slideUp { from {transform: translateY(50px);opacity:0;} to{transform:translateY(0);opacity:1;} }
+
+#chat-header { background: linear-gradient(135deg,#ff7aa2,#ffb6d9); color:white; padding:10px; font-weight:bold; text-align:center; }
+#chat-body { flex:1; padding:10px; overflow-y:auto; height:300px; background:#fff0f7; }
+.message { margin:10px 0; padding:10px; border-radius:8px; max-width:80%; word-wrap:break-word; }
+.user { background:#ff7aa2; color:white; align-self:flex-end; }
+.bot { background:#ffe4ef; color:#333; align-self:flex-start; }
+
+#chat-input { display:flex; border-top:1px solid #ffd6e8; }
+#chat-input input { flex:1; padding:10px; border:none; outline:none; }
+
+footer {
+  background: linear-gradient(135deg,#ff7aa2,#ffb6d9);
+  color:white;
+  text-align:center;
+  padding:1rem;
+  margin-top:3rem;
+  border-top-left-radius:50px;
+  border-top-right-radius:50px;
+}
+
+/* 🌙 MODE GELAP */
+body.dark-mode {
+  background: linear-gradient(-45deg,#1e1e1e,#2a2a2a,#1b1b1b,#303030);
+  color:#f0f0f0;
+}
+body.dark-mode header { background: linear-gradient(135deg,#ff4f8b,#d63384); }
+body.dark-mode nav { background:#2a2a2a; border-bottom:2px solid #ff7aa2; }
+body.dark-mode nav a { color:#ff99c8; }
+body.dark-mode nav a:hover { color:#fff; border-bottom:2px solid #ffb6d9; }
+body.dark-mode form, body.dark-mode .article, body.dark-mode #chatbot { background:#2f2f2f; border:1px solid #ff7aa2; color:#f5f5f5; }
+body.dark-mode input, body.dark-mode textarea, body.dark-mode select { background:#444; color:#fff; border:1px solid #ff99c8; }
+body.dark-mode h2 { color:#ffb6d9; }
+body.dark-mode #chat-body { background:#2b2b2b; }
+body.dark-mode .bot { background:#444; color:#f5f5f5; }
+body.dark-mode .theme-toggle { background:#ffb6d9; color:#2a2a2a; }
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1><span class="moving-title">Sistem Konseling Siswa Digital</span></h1>
+    <p style="color:white;">Tempat nyaman untuk curhat dan konsultasi dengan Guru BK 💕</p>
+    <!-- Tombol Mode Gelap/Terang -->
+    <button class="theme-toggle" onclick="toggleTheme()">🌙 Mode Gelap</button>
+  </header>  <nav>
+    <a href="#konsultasi">Form Konsultasi</a>
+    <a href="#jadwal">Jadwal BK</a>
+    <a href="#artikel">Artikel</a>
+  </nav>  <section id="konsultasi">
+    <h2>Form Keluhan / Konsultasi</h2>
+    <form id="consultForm">
+      <input type="text" id="nama" placeholder="Nama Lengkap" required />
+      <select id="kelas" required>
+        <option value="">Pilih Kelas</option>
+        <option>X</option>
+        <option>XI</option>
+        <option>XII</option>
+      </select>
+      <textarea id="keluhan" rows="5" placeholder="Tuliskan keluhan atau hal yang ingin kamu ceritakan..." required></textarea>
+      <button type="submit">Kirim</button>
+    </form>
+  </section>  <section id="jadwal">
+    <h2>Jadwal Janji Temu Guru BK</h2>
+    <form id="jadwalForm">
+      <input type="text" placeholder="Nama Siswa" required />
+      <input type="date" required />
+      <input type="time" required />
+      <button type="submit">Ajukan Janji</button>
+    </form>
+  </section>  <section id="artikel">
+    <h2>Artikel Kesehatan Mental</h2>
+    <div class="articles">
+      <div class="article">
+        <h3>Mengelola Stres di Sekolah</h3>
+        <p>Stres adalah hal yang wajar, tapi bisa diatasi dengan cara yang sehat seperti berolahraga, bercerita, atau beristirahat cukup.</p>
+      </div>
+      <div class="article">
+        <h3>Tips Percaya Diri</h3>
+        <p>Kenali kelebihanmu, hargai proses, dan jangan bandingkan dirimu dengan orang lain. Setiap orang punya waktu bersinarnya sendiri!</p>
+      </div>
+      <div class="article">
+        <h3>Pentingnya Curhat ke Guru BK</h3>
+        <p>Guru BK bukan untuk menilai, tapi untuk mendengarkan dan membantu mencari solusi terbaik buat masalahmu.</p>
+      </div>
+    </div>
+  </section>  <div id="chatbot">
+    <div id="chat-header">Chatbot BK 💬</div>
+    <div id="chat-body"></div>
+    <div id="chat-input">
+      <input type="text" id="userInput" placeholder="Tulis pesan..." />
+      <button onclick="sendMessage()">Kirim</button>
+    </div>
+  </div>  <footer>
+    &copy; 2025 Sistem Konseling Siswa Digital | Dibuat dengan 💖 oleh Tim BK
+  </footer>  <script>
+    const chatBody = document.getElementById("chat-body");
+
+    function sendMessage() {
+      const input = document.getElementById("userInput");
+      const msg = input.value.trim();
+      if (msg === "") return;
+      addMessage("🧑‍🎓 Kamu: " + msg, "user");
+      input.value = "";
+      setTimeout(() => {
+        const reply = getBotReply(msg);
+        addMessage("🤖 BK Bot: " + reply, "bot");
+      }, 700);
+    }
+
+    function addMessage(text, sender) {
+      const message = document.createElement("div");
+      message.classList.add("message", sender);
+      message.textContent = text;
+      chatBody.appendChild(message);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function getBotReply(message) {
+      const msg = message.toLowerCase();
+      if (msg.includes("halo") || msg.includes("hai") || msg.includes("hi")) return "Halo juga! 😊 Gimana kabarnya hari ini?";
+      if (msg.includes("capek") || msg.includes("lelah")) return "Wajar kok kamu capek 😴 Istirahat dulu ya, kamu udah berjuang keras hari ini 💪";
+      if (msg.includes("sedih") || msg.includes("nangis")) return "Aduh 😢 aku ikut sedih dengarnya. Tapi gapapa, semua akan baik-baik aja ya 💕";
+      if (msg.includes("pusing") || msg.includes("tugas") || msg.includes("sekolah")) return "Pusing tugas ya? 📚 Istirahat sebentar boleh kok, nanti lanjut lagi pelan-pelan ya ✨";
+      if (msg.includes("kesepian") || msg.includes("sendiri")) return "Aku temenin ngobrol ya 🥺💕 Kamu nggak sendiri kok~";
+      if (msg.includes("makasih") || msg.includes("terima kasih")) return "Sama-sama! 🫶 Aku senang bisa bantu kamu 💖";
+      if (msg.includes("guru") || msg.includes("bk")) return "Kalau kamu butuh bimbingan lebih lanjut, bisa juga buat janji temu sama guru BK ya 📅";
+      if (msg.includes("stress") || msg.includes("stres")) return "Kalau lagi stres, coba tarik napas dalam dulu 🫶 pelan-pelan... nanti semua terasa lebih ringan 🌿";
+
+      const randomReplies = [
+        "Hmm... boleh ceritain lebih detail lagi gak? 🥺",
+        "Aku dengerin kok, lanjut aja ya 💬",
+        "Kadang cerita aja udah bikin lega loh 💖",
+        "Wah, aku paham. Terus kamu gimana sekarang? 🌻"
+      ];
+      return randomReplies[Math.floor(Math.random() * randomReplies.length)];
+    }
+
+    document.getElementById("consultForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Terima kasih! Pesan kamu sudah terkirim ke Guru BK 💌");
+      this.reset();
+    });
+
+    document.getElementById("jadwalForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Janji temu berhasil diajukan! Guru BK akan segera menghubungimu 💖");
+      this.reset();
+    });
+
+    function toggleTheme() {
+      document.body.classList.toggle("dark-mode");
+      const btn = document.querySelector(".theme-toggle");
+      btn.textContent = document.body.classList.contains("dark-mode")
+        ? "☀ Mode Terang"
+        : "🌙 Mode Gelap";
+    }
+
+    document.getElementById("userInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script></body>
+</html>
